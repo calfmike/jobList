@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Job } from "./components/JobForm";
 
 import "./App.css";
 
@@ -8,25 +9,62 @@ function App() {
     "https://botfilter-h5ddh6dye8exb7ha.centralus-01.azurewebsites.net";
   const [userInfo, setUserInfo] = useState({});
   const [jobList, setJobList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const getUserId = async () => {
-    const userId = await axios.get(
-      `${baseURL}/api/candidate/get-by-email?email=juan.calfa@hotmail.com`,
-    );
-    setUserInfo(userId.data);
+    try {
+      setIsLoading(true);
+      setIsError(false);
+
+      const userInfo = await axios.get(
+        `${baseURL}/api/candidate/get-by-email?email=juan.calfa@hotmail.com`,
+      );
+
+      setUserInfo(userInfo.data);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getJobList = async () => {
-    const jobList = await axios.get(`${baseURL}/api/jobs/get-list`);
-    setJobList(jobList.data);
-  };
+    try {
+      setIsLoading(true);
+      setIsError(false);
 
+      const jobList = await axios.get(`${baseURL}/api/jobs/get-list`);
+
+      setJobList(jobList.data);
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
     getUserId();
     getJobList();
   }, []);
 
-  return <></>;
+  return (
+    <div>
+      {isLoading ? (
+        <h5>Esta cargando</h5>
+      ) : isError ? (
+        <h5>Hubo un error</h5>
+      ) : (
+        <ul>
+          {jobList.map((job) => {
+            return <Job key={job.id} job={job} userInfo={userInfo} />;
+          })}
+        </ul>
+      )}
+    </div>
+  );
 }
 
 export default App;
