@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Job } from "./components/JobForm";
 
-import "./App.css";
+
 
 function App() {
   const baseURL =
@@ -11,6 +11,7 @@ function App() {
   const [jobList, setJobList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const mail = 'juan.calfa@hotmail.com'
 
   const getUserId = async () => {
     try {
@@ -18,7 +19,7 @@ function App() {
       setIsError(false);
 
       const userInfo = await axios.get(
-        `${baseURL}/api/candidate/get-by-email?email=juan.calfa@hotmail.com`,
+        `${baseURL}/api/candidate/get-by-email?email=${mail}`,
       );
 
       setUserInfo(userInfo.data);
@@ -28,7 +29,7 @@ function App() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }; //llama al usuario por mail
 
   const getJobList = async () => {
     try {
@@ -48,18 +49,18 @@ function App() {
   useEffect(() => {
     getUserId();
     getJobList();
-  }, []);
+  }, []); // llama a la lista de ofertas
 
   return (
-    <div>
-      {isLoading ? (
+    <div className="mainContainer"> 
+      {isLoading ? ( //si esta cargando renderiza la info
         <h5>Esta cargando</h5>
       ) : isError ? (
-        <h5>Hubo un error</h5>
+        <h5>Hubo un error</h5> // idem si hay error
       ) : (
         <ul>
-          {jobList.map((job) => {
-            return <Job key={job.id} job={job} userInfo={userInfo} />;
+          {jobList.map((job) => { //recorre el array de la lista y renderiza un objeto HTML por cada uno. 
+            return <Job key={job.id} job={job} userInfo={userInfo} baseURL={baseURL} />;
           })}
         </ul>
       )}
