@@ -56,11 +56,11 @@ function App() {
       {isLoading ? ( //si esta cargando renderiza la info
         <h5>Esta cargando</h5>
       ) : isError ? (
-        <h5>Hubo un error</h5> // idem si hay error
+        <h5>Hubo un error refresque</h5> // idem si hay error
       ) : (
         <ul>
           {jobList.map((job) => { //recorre el array de la lista y renderiza un objeto HTML por cada uno. 
-            return <Job key={job.id} job={job} userInfo={userInfo} baseURL={baseURL} />;
+            return <Job key={job.id} job={job} userInfo={userInfo} baseURL={baseURL} isError={isError} setIsError={setIsError} />;
           })}
         </ul>
       )}
