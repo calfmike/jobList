@@ -10,11 +10,16 @@ body {
   color: #F3F4F4;
 }
 
+h5 {
+  display: inline;
+}
+
 /* CONTENEDOR PRINCIPAL */
 .mainContainer {
   padding: 20px;
   display: flex;
   justify-content: center;
+ 
 }
 
 /* LISTA */
@@ -68,8 +73,14 @@ button {
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+  margin-right: 5;
 }
 
 button:hover {
   opacity: 0.9;
+  
+}
+
+,backBtn{
+  margin: 10rem;
 }

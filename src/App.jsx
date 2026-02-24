@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Job } from "./components/JobForm";
 
-
-
 function App() {
   const baseURL =
     "https://botfilter-h5ddh6dye8exb7ha.centralus-01.azurewebsites.net";
@@ -11,7 +9,7 @@ function App() {
   const [jobList, setJobList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const mail = 'juan.calfa@hotmail.com'
+  const mail = "juan.calfa@hotmail.com";
 
   const getUserId = async () => {
     try {
@@ -52,15 +50,29 @@ function App() {
   }, []); // llama a la lista de ofertas
 
   return (
-    <div className="mainContainer"> 
+    <div className="mainContainer">
       {isLoading ? ( //si esta cargando renderiza la info
         <h5>Esta cargando</h5>
       ) : isError ? (
-        <h5>Hubo un error refresque</h5> // idem si hay error
+        <>
+          <h5>Hubo un error, refresque</h5>   <br />
+
+          <button className='backBtn'onClick={() => window.location.reload()}>Refrescar</button>
+        </>
       ) : (
         <ul>
-          {jobList.map((job) => { //recorre el array de la lista y renderiza un objeto HTML por cada uno. 
-            return <Job key={job.id} job={job} userInfo={userInfo} baseURL={baseURL} isError={isError} setIsError={setIsError} />;
+          {jobList.map((job) => {
+            //recorre el array de la lista y renderiza un objeto HTML por cada uno.
+            return (
+              <Job
+                key={job.id}
+                job={job}
+                userInfo={userInfo}
+                baseURL={baseURL}
+                isError={isError}
+                setIsError={setIsError}
+              />
+            );
           })}
         </ul>
       )}
